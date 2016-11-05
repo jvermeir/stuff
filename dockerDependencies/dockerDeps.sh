@@ -7,7 +7,7 @@
 # Some files are ignored because in my orginal use case they produced a useless 
 # picture. You may have to adapt the if statement for best results. 
 # 
-# Usage: ./dockerDeps.sh -r <rootOfSources>
+# Usage: ./dockerDeps.sh <-r rootOfSources> [-o outputFile]
 # Example: 
 #   ./dockerDeps.sh -r ./test
 #   dot -Tps $OUTPUT_FILE -o dockerDeps.ps
