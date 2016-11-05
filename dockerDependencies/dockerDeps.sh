@@ -15,24 +15,20 @@
 
 if (( $# < 1 ))
 then
-   printf "Usage: ./dockerDepts.sh <-r value> \n" 
+   printf "Usage: ./dockerDepts.sh <-r value> [-o outputFile]\n"
    exit 2
 fi
-  
+
+OUTPUT_FILE=/tmp/dockerDeps.gv
 while getopts 'r:' OPTION
 do
   case $OPTION in
      r) SRC_ROOT="$OPTARG"
    	    ;;
-      ?)  printf "Usage: ./dockerDepts.sh <-r value> \n" 
-		  exit 2
-	    ;; 
+     o) OUTPUT_FILE="$OPTARG"
+   	    ;;
   esac
 done
-
-echo "root: $SRC_ROOT"
-
-OUTPUT_FILE=/tmp/dockerDeps.gv
 
 dockerFiles=`find $SRC_ROOT -name Dockerfile`
 
