@@ -15,12 +15,12 @@
 
 if (( $# < 1 ))
 then
-   printf "Usage: ./dockerDeps.sh <-r value> [-o outputFile]\n"
+   printf "Usage: ./dockerDeps.sh <-r rootOfSources> [-o outputFile]\n"
    exit 2
 fi
 
 OUTPUT_FILE=/tmp/dockerDeps.gv
-while getopts 'r:' OPTION
+while getopts 'r:o:' OPTION
 do
   case $OPTION in
      r) SRC_ROOT="$OPTARG"
