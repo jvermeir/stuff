@@ -15,7 +15,7 @@
 
 if (( $# < 1 ))
 then
-   printf "Usage: ./dockerDepts.sh <-r value> [-o outputFile]\n"
+   printf "Usage: ./dockerDeps.sh <-r value> [-o outputFile]\n"
    exit 2
 fi
 
