@@ -114,7 +114,7 @@ public class CommentCleaner {
 
     public static void main(String args[]) {
         if (args.length < 1) {
-            System.err.println("Usage: CommentCleaner [pathToSources");
+            System.err.println("Usage: CommentCleaner [pathToSources]");
             System.exit(-1);
         }
         String pathToSources = args[0];
