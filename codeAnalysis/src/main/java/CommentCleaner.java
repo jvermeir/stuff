@@ -25,6 +25,7 @@ public class CommentCleaner {
     private List<MethodData> correctMethods = new ArrayList<>();
     private List<MethodData> errors = new ArrayList<>();
     private static final Logger LOGGER = Logger.getLogger(CommentCleaner.class.getName());
+    private static final MethodData EMPTY_MOTHODDATA = new MethodData("EMPTY", "EMPTY", "EMPTY");
 
     public List<MethodData> getMethodsWithWrongLogLine() {
         List<MethodData> result = new ArrayList<>();
@@ -40,9 +41,18 @@ public class CommentCleaner {
 
     public void parseAllClassesAndMethods(String pathToSourceFiles) {
         Collection<File> allJavaSourceFiles = FileUtils.listFiles(new File(pathToSourceFiles), new JavaSourceFilesFilter(), TrueFileFilter.INSTANCE);
-        List<MethodData> methodDataList = allJavaSourceFiles.stream().map(file -> parseFile(file)).flatMap(Collection::stream).collect(Collectors.toList());
-        errors.addAll(methodDataList.stream().filter(method -> !isMethodOk(method)).collect(Collectors.toList()));
-        correctMethods.addAll(methodDataList.stream().filter(method -> isMethodOk(method)).collect(Collectors.toList()));
+        List<MethodData> methodDataList = allJavaSourceFiles.stream()
+                .map(file -> parseFile(file))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        errors.addAll(methodDataList
+                .stream()
+                .filter(method -> !isMethodOk(method))
+                .collect(Collectors.toList()));
+        correctMethods.addAll(methodDataList
+                .stream()
+                .filter(method -> isMethodOk(method))
+                .collect(Collectors.toList()));
     }
 
     public String printReport() {
@@ -73,7 +83,8 @@ public class CommentCleaner {
             Stream<List<MethodData>> listStream = cu.getTypes().stream().map(type -> type.getMembers().stream()
                     .filter(member -> member instanceof MethodDeclaration)
                     .map(member -> getMethodNameVariableValue(type.getName(), (MethodDeclaration) member))
-                    .filter(methodData -> methodData != null).collect(Collectors.toList()));
+                    .filter(methodData -> !methodData.equals(EMPTY_MOTHODDATA))
+                    .collect(Collectors.toList()));
             result = listStream.findFirst().get();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Ignoring: " + file.getAbsolutePath());
@@ -81,20 +92,17 @@ public class CommentCleaner {
         return result;
     }
 
-    private MethodData getMethodNameVariableValue(SimpleName className, MethodDeclaration declaration) {
-        MethodDeclaration method = (MethodDeclaration) declaration;
-        Optional<BlockStmt> body = method.getBody();
-        BlockStmt blockStmt = body.orElse(null);
-        if (blockStmt == null) {
-            return null;
-        }
+    private MethodData getMethodNameVariableValue(SimpleName className, MethodDeclaration methodDeclaration) {
+        Optional<BlockStmt> body = methodDeclaration.getBody();
+        BlockStmt blockStmt = body.orElse(new BlockStmt());
         NodeList<Statement> statements = blockStmt.getStatements();
         String logLabel = getMethodNameVariableValue(statements);
         if (logLabel != NOMETHODFOUND) {
-            return new MethodData(className.toString(), method.getNameAsString(), logLabel);
+            return new MethodData(className.toString(), methodDeclaration.getNameAsString(), logLabel);
         }
-        return null;
+        return EMPTY_MOTHODDATA;
     }
+
 
     private String getMethodNameVariableValue(NodeList<Statement> statements) {
         return statements.stream()
