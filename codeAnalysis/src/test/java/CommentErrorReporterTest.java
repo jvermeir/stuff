@@ -6,10 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 
 public class CommentErrorReporterTest {
+    private static final String PATH_TO_SOURCE_FILES = "target/test-classes/commentErrorReporter";
+
     @Test
     public void testTwoMethodsAreWrongAndFourMethodsAreCorrect() {
         CommentErrorReporter commentErrorReporter = new CommentErrorReporter();
-        commentErrorReporter.parseAllClassesAndMethods("target/test-classes/");
+        commentErrorReporter.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES );
         Assert.assertEquals(2, commentErrorReporter.getMethodsWithWrongLogLine().size());
         Assert.assertEquals(4, commentErrorReporter.getCorrectMethods().size());
     }
@@ -17,7 +19,7 @@ public class CommentErrorReporterTest {
     @Test
     public void testMethodsAreQualifiedCorrectly() {
         CommentErrorReporter commentErrorReporter = new CommentErrorReporter();
-        commentErrorReporter.parseAllClassesAndMethods("target/test-classes/sub2/");
+        commentErrorReporter.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES + "/sub2/");
         HashSet correctMethods = new HashSet(commentErrorReporter.getCorrectMethods());
         Assert.assertEquals(3, correctMethods.size());
         correctMethods.remove(new MethodData("X", "methodNameOK", "methodNameOK"));
@@ -34,7 +36,7 @@ public class CommentErrorReporterTest {
     @Test
     public void testClassNameIsCorrectInResult() {
         CommentErrorReporter commentErrorReporter = new CommentErrorReporter();
-        List<MethodData> methodDataList = commentErrorReporter.parseFile("target/test-classes/sub2/X.java");
+        List<MethodData> methodDataList = commentErrorReporter.parseFile(PATH_TO_SOURCE_FILES + "/sub2/X.java");
         MethodData firstMethod = methodDataList.get(0);
         Assert.assertEquals("X",firstMethod.className);
     }
@@ -42,7 +44,7 @@ public class CommentErrorReporterTest {
     @Test
     public void testReportContainsAllMethods() {
         CommentErrorReporter commentErrorReporter = new CommentErrorReporter();
-        commentErrorReporter.parseAllClassesAndMethods("target/test-classes/");
+        commentErrorReporter.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES);
         String expectedResult = "Methods with errors \n" +
                 "[Y, wrongMethodName, thisMethodNameIsWrong]\n" +
                 "[X, wrongMethodName, thisMethodNameIsWrong]\n" +
