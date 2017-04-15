@@ -20,11 +20,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CommentCleaner {
+public class CommentErrorReporter {
     public static final String NOMETHODFOUND = "<NOMETHODFOUND>";
     private List<MethodData> correctMethods = new ArrayList<>();
     private List<MethodData> errors = new ArrayList<>();
-    private static final Logger LOGGER = Logger.getLogger(CommentCleaner.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentErrorReporter.class.getName());
     private static final MethodData EMPTY_MOTHODDATA = new MethodData("EMPTY", "EMPTY", "EMPTY");
 
     public List<MethodData> getMethodsWithWrongLogLine() {
@@ -122,13 +122,13 @@ public class CommentCleaner {
 
     public static void main(String args[]) {
         if (args.length < 1) {
-            System.err.println("Usage: CommentCleaner [pathToSources]");
+            System.err.println("Usage: CommentErrorReporter [pathToSources]");
             System.exit(-1);
         }
         String pathToSources = args[0];
-        CommentCleaner commentCleaner = new CommentCleaner();
-        commentCleaner.parseAllClassesAndMethods(pathToSources);
-        System.out.println(commentCleaner.printReport());
+        CommentErrorReporter commentErrorReporter = new CommentErrorReporter();
+        commentErrorReporter.parseAllClassesAndMethods(pathToSources);
+        System.out.println(commentErrorReporter.printReport());
     }
 }
 
