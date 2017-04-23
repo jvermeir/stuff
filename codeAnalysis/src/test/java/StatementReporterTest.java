@@ -11,7 +11,7 @@ public class StatementReporterTest {
     @Test
     public void testMethodWithStatementInStatementInStatementReturnsBlockWithiIs3() {
         StatementExtractor statementExtractor = new StatementExtractor();
-        List<Node> nodes = statementExtractor.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES);
+        List<Node> nodes = statementExtractor.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES + "/basicTest");
         Assert.assertEquals(1, nodes.size());
         String statement = nodes.get(0).toString(new PrettyPrinterConfiguration());
         Assert.assertTrue(statement.indexOf("i = 3;") > 0 );
@@ -19,4 +19,17 @@ public class StatementReporterTest {
         Assert.assertTrue(statement.indexOf("i = 2;") < 0 );
     }
 
+    @Test
+    public void testTwoMethodsAreReportedFromOneClass() {
+        StatementExtractor statementExtractor = new StatementExtractor();
+        List<Node> nodes = statementExtractor.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES + "/multiMethodTest");
+        Assert.assertEquals(2, nodes.size());
+    }
+
+    @Test
+    public void testTwoMethodsAreReportedFromTwoClasses() {
+        StatementExtractor statementExtractor = new StatementExtractor();
+        List<Node> nodes = statementExtractor.parseAllClassesAndMethods(PATH_TO_SOURCE_FILES + "/multiClassTest");
+        Assert.assertEquals(2, nodes.size());
+    }
 }

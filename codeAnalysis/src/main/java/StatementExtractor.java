@@ -48,10 +48,10 @@ public class StatementExtractor {
         try {
             CompilationUnit cu = JavaParser.parse(new FileInputStream(file));
             NodeList<TypeDeclaration<?>> types = cu.getTypes();
-            // TODO: loop over types
-            TypeDeclaration<?> typeDeclaration = types.get(0);
-            List<Node> node = processType(typeDeclaration);
-            result.addAll(node);
+            for (TypeDeclaration typeDeclaration:cu.getTypes()) {
+                List<Node> node = processType(typeDeclaration);
+                result.addAll(node);
+            }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Ignoring: " + file.getAbsolutePath());
         }
@@ -59,11 +59,12 @@ public class StatementExtractor {
     }
 
     private List<Node> processType(TypeDeclaration<?> typeDeclaration) {
-        List<MethodDeclaration> methods = typeDeclaration.getMethods();
-        // TODO: loop over methods
-        MethodDeclaration methodDeclaration = methods.get(0);
-        BlockStmt body = methodDeclaration.getBody().get();
-        return traverseNodes(body.getChildNodes(), new ArrayList<>(), 0);
+        List<Node> result = new ArrayList<>();
+        for (MethodDeclaration methodDeclaration: typeDeclaration.getMethods()) {
+            BlockStmt body = methodDeclaration.getBody().get();
+            result.addAll(traverseNodes(body.getChildNodes(), new ArrayList<>(), 0));
+        }
+        return result;
     }
 
     private List<Node> traverseNodes(List<Node> childNodes, List<Node> result, int level) {
