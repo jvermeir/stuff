@@ -1,4 +1,4 @@
-package ifStatementReporter;
+package StatementReporter;
 
 public class IfStatementTest {
     private static final MethodData EMPTY_MOTHODDATA = new MethodData("EMPTY", "EMPTY", "EMPTY");
