@@ -42,3 +42,5 @@ He looked at the code and thought it was nice, but suggested some reformatting, 
 Aha, I thought, now I can see what's going on, way better. But wait: now I have almost the same number of lines as before, but without the if. 
 
 So, which of these solutions is better?
+
+You can find the code here: https://github.com/jvermeir/stuff/tree/master/javaStuff/src/main/java/ifs
