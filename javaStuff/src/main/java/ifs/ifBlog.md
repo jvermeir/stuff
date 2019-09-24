@@ -1,6 +1,6 @@
 How to if? 
 
-While trying to upgrade my programming skills, I ran into a new fangled way to do ifs. 
+While trying to upgrade my programming skills, I ran into a new-fangled way to do ifs. 
 The example below is taken from code that reads properties from a file. A property may or may not 
 be defined in the file. If it isn't it should get a default value. 
   
@@ -15,7 +15,7 @@ So my classic go-to solution was to use an if statement like this:
     }
 
 While this works, I thought I might as well try something new. Imagine a class with thirty properties or so.
-That would result in a really noisy method that would probably get flagged by SonarCube as to complex, forcing
+That would result in a noisy method that would probably get flagged by SonarCube as to complex, forcing
 me to annotate the code so the warning would be ignored and then everyone who would be reading
 this method would have to process the warning and agree it was not important. Lots of wasted future effort.
 
@@ -28,7 +28,7 @@ So I came up with this:
 Nice, I thought, a one-liner, that is always great, right? But is it better? Looking at this 
 version a few days later I thought it hides what is going on. While the classic version is
 very specific, more like a human being would reason, the second version seems to be doing its best
-to hide its intentions. At least, to me it looks like that's what its doing.
+to hide its intentions. At least, to me, it looks like that's what it's doing.
 
 So I figured I'd ask a colleague who has the benefit of having grown up with functional programming.
 He looked at the code and thought it was nice, but suggested some reformatting, like this:
