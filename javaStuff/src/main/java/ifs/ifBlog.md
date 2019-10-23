@@ -1,7 +1,9 @@
 How to if? 
 
 While trying to upgrade my programming skills, I ran into a new-fangled way to do ifs. 
-The example below is taken from code that gets a value from a set of class. A value may or may not be defined and if it isn't the client code should use a default. 
+The example below is taken from code that gets a value for a property of a class. A value may or may not be set and if it isn't the code should use a default. 
+
+You can find the code here: https://github.com/jvermeir/stuff/tree/master/javaStuff/src/main/java/ifs
   
 So my classic go-to solution was to use an if statement like this:
 
@@ -41,5 +43,3 @@ He looked at the code and thought it was nice, but suggested some reformatting, 
 Aha, I thought, now I can see what's going on, way better. But wait: now I have almost the same number of lines as before, but without the if. 
 
 So, which of these solutions is better?
-
-You can find the code here: https://github.com/jvermeir/stuff/tree/master/javaStuff/src/main/java/ifs
