@@ -1,35 +1,34 @@
 package ifs;
 
 import java.util.Optional;
-import java.util.Properties;
 
 public class BunchOfIfSolutions {
-    MyProperties properties = new MyProperties();
+    MyStuff stuff = new MyStuff();
 
     public Integer initTheClassicWay() {
         Integer prop = 42;
-        if (properties.getProp() != null) {
-            prop = properties.getProp();
+        if (stuff.getProp() != null) {
+            prop = stuff.getProp();
         }
         return prop;
     }
 
     public Integer initTheOptionalWay() {
-        return (Optional.of(properties.getProp()).orElse(42));
+        return (Optional.of(stuff.getProp()).orElse(42));
     }
 
     public Integer initTheBetterFormattedWay() {
         return (Optional
-                .of(properties.getProp())
+                .of(stuff.getProp())
                 .orElse(42));
     }
 }
 
-class MyProperties extends Properties {
+class MyStuff {
     private Integer prop;
 
-    MyProperties() {
-        this.prop = 42;
+    MyStuff() {
+        // compute a value for this.prop. The value may be null.
     }
 
     public void setProp(Integer prop) {
