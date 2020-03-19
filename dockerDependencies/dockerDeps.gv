@@ -1,0 +1,9 @@
+digraph G {
+"docker-java-chrome" -> "docker-java";
+"docker-python-cx_oracle" -> "docker-java";
+"docker-sec-fe-gitlab" -> "docker-securities-runner";
+"docker-securities-runner" -> "docker-securities-runner-javascript";
+"docker-securities-runner-java" -> "docker-securities-runner-sources";
+"docker-securities-runner-javascript" -> "docker-securities-runner-sources";
+"docker-securities-runner-sources" -> "docker-java-chrome";
+}

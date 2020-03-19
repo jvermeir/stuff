@@ -1,7 +1,6 @@
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.*;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 public class StatementExtractor {
     private static final Logger LOGGER = Logger.getLogger(StatementExtractor.class.getName());
     private static final int TRESHHOLD = 3;
+    public static final Set<Class> complexNodeTypes = new HashSet<Class>(Arrays.asList(IfStmt.class, WhileStmt.class, ForStmt.class, ForeachStmt.class));
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -27,30 +27,28 @@ public class StatementExtractor {
         }
         String pathToSources = args[0];
         StatementExtractor statementExtractor = new StatementExtractor();
-        List<Node> methodDataList = statementExtractor.parseAllClassesAndMethods(pathToSources);
+        List<Node> extractableNodes = statementExtractor.parseAllClassesAndMethods(pathToSources);
         LOGGER.log(Level.INFO, "Code fragments to be extracted: ");
-        for (Node methodData : methodDataList) {
-            LOGGER.log(Level.INFO, methodData.toString(new PrettyPrinterConfiguration()));
+        for (Node node : extractableNodes) {
+            LOGGER.log(Level.INFO, node.toString(new PrettyPrinterConfiguration()));
         }
     }
 
     public List<Node> parseAllClassesAndMethods(String pathToSourceFiles) {
         Collection<File> allJavaSourceFiles = FileUtils.listFiles(new File(pathToSourceFiles), new JavaSourceFilesFilter(), TrueFileFilter.INSTANCE);
-        List<Node> methodDataList = allJavaSourceFiles.stream()
+        List<Node> extractableNodes = allJavaSourceFiles.stream()
                 .map(file -> parseFile(file))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        return methodDataList;
+        return extractableNodes;
     }
 
     protected List<Node> parseFile(File file) {
         List<Node> result = new ArrayList<>();
         try {
             CompilationUnit cu = JavaParser.parse(new FileInputStream(file));
-            NodeList<TypeDeclaration<?>> types = cu.getTypes();
             for (TypeDeclaration typeDeclaration:cu.getTypes()) {
-                List<Node> node = processType(typeDeclaration);
-                result.addAll(node);
+                result.addAll(processType(typeDeclaration));
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Ignoring: " + file.getAbsolutePath());
@@ -71,7 +69,7 @@ public class StatementExtractor {
         for (Node node : childNodes) {
             if (level == TRESHHOLD) {
                 List<Node> offspring = getOffspring(node);
-                if (hasChildren(offspring)) {
+                if (nodeHasChildren(offspring)) {
                     Node parentNode = node.getParentNode().get();
                     if (nodeIsOfComplexType(parentNode)) {
                         result.add(parentNode);
@@ -85,8 +83,6 @@ public class StatementExtractor {
         return result;
     }
 
-    public static final Set<Class> complexNodeTypes = new HashSet<Class>(Arrays.asList(IfStmt.class, WhileStmt.class, ForStmt.class, ForeachStmt.class));
-
     private boolean nodeIsOfComplexType(Node node) {
         if (complexNodeTypes.contains(node.getClass())) {
             return true;
@@ -94,7 +90,7 @@ public class StatementExtractor {
         return false;
     }
 
-    private boolean hasChildren(List<Node> nodes) {
+    private boolean nodeHasChildren(List<Node> nodes) {
         for (Node node : nodes) {
             if (node.getChildNodes().size() > 0) {
                 return true;
