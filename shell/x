@@ -1,0 +1,6 @@
+sdk install gradle
+sdk install maven
+
+brew uninstall maven
+brew uninstall gradle
+

@@ -40,7 +40,7 @@
     git checkout <filename>
 
 ## Reset master to origin
-    git checkout -B master origin/master
+    git switch -C mybranch origin/mybranch
 
 ## List branches
     git branch -a
@@ -90,10 +90,42 @@
 ## Abandon merge
     git merge —abort
 
-## stash
+## Stash
     git stash
     git stash pop
 
 ## Check before merge
     git merge master --no-ff --no-commit
     git merge --abort
+
+## Remotes
+
+    git config --get remote.origin.url
+    git remote add origin git@github.com:jvermeir/flink-training-exercises.git
+    git remote set-url origin git@github.com:jvermeir/flink-training-exercises.git
+    
+## Rebase workflow
+
+    git checkout -b b5
+    touch b5
+    git add b5
+    git commit -m "b5"
+    git checkout master
+    touch m5
+    git add m5
+    git commit -m m5
+    git checkout b5
+    git rebase master
+    git checkout master
+    git merge b5
+    git push
+
+## Reset repo to a tag, remove all history past the tag
+
+    git reset --hard basic-app # or use the short commit hash
+    git push origin -f
+    
+## Apply commit from a different branch
+
+    git cherry-pick <commit-id>
+         

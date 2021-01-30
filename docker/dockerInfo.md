@@ -50,3 +50,11 @@
 
 ##Run a shell, mapping pwd to /source in the container
     docker run -it -v $PWD:/source java /bin/bash
+
+## Push image to docker hub 
+    docker login  # do this once 
+    
+    docker build . -t jvermeir/date-time
+    
+    docker push jvermeir/date-time:latest
+    
