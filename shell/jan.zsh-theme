@@ -7,11 +7,7 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
 
-### thefuck
-#eval $(thefuck --alias)
-plugins=(... thefuck)
-alias f="fuck"
-
 ### enscript
 alias p="enscript -fCourier10"
-
+alias o="open"
+alias e="edit"
