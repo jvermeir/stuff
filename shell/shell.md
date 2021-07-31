@@ -16,13 +16,19 @@ configured `aussiegeek` for now
 
     brew install thefuck
 
-## fzf
+### fzf
 
 ```
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
 source ~/.zshrc
+```
+
+### autosuggestions
+
+```
+https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
 ```
 
 ## awk
